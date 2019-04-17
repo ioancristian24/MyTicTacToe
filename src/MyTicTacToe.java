@@ -45,12 +45,26 @@ public class MyTicTacToe {
 
         Move move = new Move(myLine, myColumn);
         return move;
-
     }
 
     public void makeMove(Move move, char symbol) {
         game[move.line][move.col] = symbol;
+    }
 
+    public boolean validateMove1(Move move) {
+        boolean isValidInput = true;
+        if (move.line >= GAME_SIZE || move.col >= GAME_SIZE) {
+            isValidInput = false;
+        }
+        return isValidInput;
+    }
+
+    public boolean validateMove2(Move move) {
+        boolean isValidMove = true;
+        if (game[move.line][move.col] == SYMBOL_X || game[move.line][move.col] == SYMBOL_0) {
+            isValidMove = false;
+        }
+        return isValidMove;
     }
 
     public boolean isWinLine(int line, char symbol) {
@@ -134,7 +148,7 @@ public class MyTicTacToe {
         int nrMoves = 0;
         boolean isWin = false;
 
-        while (isWin == false && nrMoves < (GAME_SIZE*GAME_SIZE)) {
+        while (isWin == false && nrMoves < (GAME_SIZE * GAME_SIZE)) {
 
             //citesc mutarea
             Move move = readMove();
@@ -142,38 +156,44 @@ public class MyTicTacToe {
             System.out.println(move.col);
 
             //validez mutarea
+            if (validateMove1(move)== false) {
+                System.out.println("Introdu valori mai mici decat " + GAME_SIZE);
+                showGame();
+            }else if (validateMove2(move) ==false) {
+                System.out.println("Casuta este deja ocupata. Gaseste o casuta libera ");
+                showGame();
+            }else {
+                //efectuez mutarea
+                makeMove(move, currentSymbol);
+                showGame();
 
+                //numar mutarea
+                nrMoves++;
+                if (nrMoves >= 2 * GAME_SIZE - 1) {
+                    //testez daca avem starea de WIN
+                    isWin = isWin(move, currentSymbol);
+                }
 
-            //efectuez mutarea
-            makeMove(move, currentSymbol);
-            showGame();
+                //daca nu e WIN sau mai am mutari -- schimb jucatorul
+                if (!isWin) {
+                    if (currentPlayer == player1) {
+                        currentPlayer = player2;
+                        currentSymbol = SYMBOL_0;
+                    } else {
+                        currentPlayer = player1;
+                        currentSymbol = SYMBOL_X;
 
-
-            //numar mutarea
-            nrMoves++;
-            if (nrMoves >= 2 * GAME_SIZE - 1) {
-                //testez daca avem starea de WIN
-                isWin = isWin(move, currentSymbol);
-            }
-
-            //daca nu e WIN sau mai am mutari -- schimb jucatorul
-            if (!isWin) {
-                if (currentPlayer == player1) {
-                    currentPlayer = player2;
-                    currentSymbol = SYMBOL_0;
-                } else {
-                    currentPlayer = player1;
-                    currentSymbol = SYMBOL_X;
-
+                    }
                 }
             }
         }
 
-        //afisez mesaj corespunzator
-        if (isWin == true) {
-            System.out.println("a castigat " + currentPlayer.name);
-        } else {
-            System.out.println("Jocul nu a fost castigat de nici un jucator! ");
+            //afisez mesaj corespunzator
+            if (isWin == true) {
+                System.out.println("a castigat " + currentPlayer.name);
+
+            } else System.out.println("Jocul nu a fost castigat de nici un jucator! ");
         }
     }
-}
+
+
