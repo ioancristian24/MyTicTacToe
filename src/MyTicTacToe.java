@@ -51,20 +51,15 @@ public class MyTicTacToe {
         game[move.line][move.col] = symbol;
     }
 
-    public boolean validateMove1(Move move) {
-        boolean isValidInput = true;
+    public boolean validateMove(Move move) {
         if (move.line >= GAME_SIZE || move.col >= GAME_SIZE) {
-            isValidInput = false;
+            return false;
         }
-        return isValidInput;
-    }
 
-    public boolean validateMove2(Move move) {
-        boolean isValidMove = true;
         if (game[move.line][move.col] == SYMBOL_X || game[move.line][move.col] == SYMBOL_0) {
-            isValidMove = false;
+            return false;
         }
-        return isValidMove;
+        return true;
     }
 
     public boolean isWinLine(int line, char symbol) {
@@ -152,17 +147,20 @@ public class MyTicTacToe {
 
             //citesc mutarea
             Move move = readMove();
-            System.out.println(move.line);
-            System.out.println(move.col);
 
             //validez mutarea
-            boolean moveIsValid = false;
+            boolean moveIsValid = validateMove(move);
+
             while (!moveIsValid) {
-                moveIsValid = validateMove1(move);
-                if (!moveIsValid) {
-                    moveIsValid = validateMove2(move);
-                    showGame();
-                }
+                System.out.println("Mutare Invalida !");
+
+                move = readMove();
+
+                System.out.println(move.line);
+                System.out.println(move.col);
+
+                moveIsValid = validateMove(move);
+
             }
 
             makeMove(move, currentSymbol);
