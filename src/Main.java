@@ -16,5 +16,20 @@ public class Main {
         MyTicTacToe myTicTacToe = new MyTicTacToe(player1,player2);
         myTicTacToe.playGame();
 
+        boolean newGame = true;
+
+        while(newGame){
+            System.out.println("Vrei sa incepi un nou joc ? ");
+            System.out.println("Pentru DA apasati Y, pentru NU apasati oricare tasta ");
+            String d = scanner.nextLine();
+
+            if (d.equals("Y")){
+                myTicTacToe.playGame();
+            }else{
+                System.out.println("Jocul s-a incheiat !");
+                newGame = false;
+            }
+        }
+
     }
 }

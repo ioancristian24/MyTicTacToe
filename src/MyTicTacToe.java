@@ -156,34 +156,35 @@ public class MyTicTacToe {
             System.out.println(move.col);
 
             //validez mutarea
-            if (validateMove1(move)== false) {
-                System.out.println("Introdu valori mai mici decat " + GAME_SIZE);
-                showGame();
-            }else if (validateMove2(move) ==false) {
-                System.out.println("Casuta este deja ocupata. Gaseste o casuta libera ");
-                showGame();
-            }else {
-                //efectuez mutarea
-                makeMove(move, currentSymbol);
-                showGame();
-
-                //numar mutarea
-                nrMoves++;
-                if (nrMoves >= 2 * GAME_SIZE - 1) {
-                    //testez daca avem starea de WIN
-                    isWin = isWin(move, currentSymbol);
+            boolean moveIsValid = false;
+            while (!moveIsValid) {
+                moveIsValid = validateMove1(move);
+                if (!moveIsValid) {
+                    moveIsValid = validateMove2(move);
+                    showGame();
                 }
+            }
 
-                //daca nu e WIN sau mai am mutari -- schimb jucatorul
-                if (!isWin) {
-                    if (currentPlayer == player1) {
-                        currentPlayer = player2;
-                        currentSymbol = SYMBOL_0;
-                    } else {
-                        currentPlayer = player1;
-                        currentSymbol = SYMBOL_X;
+            makeMove(move, currentSymbol);
+            showGame();
 
-                    }
+            //numar mutarea
+            nrMoves++;
+
+            //testez daca avem starea de WIN
+            if (nrMoves >= 2 * GAME_SIZE - 1) {
+                isWin = isWin(move, currentSymbol);
+            }
+
+            //daca nu e WIN sau mai am mutari -- schimb jucatorul
+            if (!isWin) {
+                if (currentPlayer == player1) {
+                    currentPlayer = player2;
+                    currentSymbol = SYMBOL_0;
+                } else {
+                    currentPlayer = player1;
+                    currentSymbol = SYMBOL_X;
+
                 }
             }
         }
